@@ -1,5 +1,7 @@
 import React, {Fragment, useState} from "react";
 
+import clienteAxios from "../../config/axios";
+
 function NuevoCliente () {
     const[cliente, guardarCliente] = useState({
         nombre: '',
@@ -22,10 +24,26 @@ function NuevoCliente () {
         })
     }
 
+    const agregarCliente = e => {
+        e.preventDefault();
+        clienteAxios.post('/clientes', cliente)
+            .then(res => {
+                if(res.data.code === 11000){
+                    console.log('Error de correo duplicado')
+                }
+                else{
+                    console.log(res.data)
+                }
+            })
+
+    }
+
     return(
         <Fragment>
             <h2>Nuevo Cliente</h2>
-            <form>
+            <form
+                onSubmit={agregarCliente}
+            >
                 <legend>Llena todos los campos</legend>
 
                 <div className="campo">
