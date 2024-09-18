@@ -9,6 +9,12 @@ function NuevoCliente () {
         telefono: ''
     })
 
+    const validarCliente = () => {
+        const {nombre, apellido, email, empresa, telefono} = cliente;
+
+        return !nombre.length || !apellido.length || !email.length || !empresa.length || !telefono.length
+    }
+
     const actualizarState = e => {
         guardarCliente({
             ...cliente,
@@ -60,7 +66,7 @@ function NuevoCliente () {
 
                 <div className="campo">
                     <label>Teléfono:</label>
-                    <input  type="email"
+                    <input  type="tel"
                             placeholder="Teléfono Cliente"
                             name="telefono"
                             onChange={actualizarState}
@@ -70,7 +76,9 @@ function NuevoCliente () {
                 <div className="enviar">
                     <input  type="submit"
                             className="btn btn-azul"
-                            value="Agregar Cliente"/>
+                            value="Agregar Cliente"
+                            disabled={validarCliente()}
+                    />
                 </div>
 
             </form>
