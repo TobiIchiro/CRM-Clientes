@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from "react";
+import Swal from "sweetalert2";
 
 import clienteAxios from "../../config/axios";
 
@@ -29,10 +30,18 @@ function NuevoCliente () {
         clienteAxios.post('/clientes', cliente)
             .then(res => {
                 if(res.data.code === 11000){
-                    console.log('Error de correo duplicado')
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Correo registrado'
+                    })
                 }
                 else{
-                    console.log(res.data)
+                    Swal.fire(
+                        'Se agregó un nuevo cliente',
+                        res.data.mensaje,
+                        'success'
+                    )
                 }
             })
 
