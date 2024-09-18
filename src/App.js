@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 
 //Routing
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 
 /* Layout */
 import Header from "./components/layout/Header";
@@ -10,7 +10,7 @@ import Navegacion from "./components/layout/Navegacion";
 /* Componentes */
 import Clientes from "./components/clientes/Clientes";
 import Pedidos from "./components/pedidos/Pedidos";
-import Productos from "./components/productos/Clientes";
+import Productos from "./components/productos/Productos";
 
 function App() {
   return (
@@ -20,13 +20,13 @@ function App() {
         <div className="grid contenedor contenido-principal">
           <Navegacion />
           <main class="caja-contenido col-9">
-            <Switch>
-              <Route exact path="/" component={Clientes}/>
+            <Routes>
+              <Route exact path="/clientes" element={<Clientes/>}/>
 
-              <Route exact path="/" component={Productos}/>
+              <Route exact path="/productos" element={<Productos/>}/>
 
-              <Route exact path="/" component={Pedidos}/>
-            </Switch>
+              <Route exact path="/pedidos" element={<Pedidos/>}/>
+            </Routes>
           </main>
         </div>
       </Fragment>
