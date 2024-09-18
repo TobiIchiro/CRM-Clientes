@@ -1,19 +1,32 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState, Fragment} from "react";
 
 import clienteAxios from "../../config/axios";
 
 
 
 function Clientes() {
+
+    const [clientes, guardarClientes] = useState([])
+
     const consultarAPI = async () => {
         const clientesConsulta = await clienteAxios.get('/clientes')
+        guardarClientes(clientesConsulta.data)
     }
 
     useEffect( () => {
         consultarAPI();
-    });
+    }, []);
 
-    <h2>Clientes</h2>
+    return (
+        <Fragment>
+            <h2>Clientes</h2>
+            <ul className="listado-clientes">
+                {clientes.map(cliente => {
+                    console.log(cliente)
+                })}
+            </ul>
+        </Fragment>
+    )
 }
 
 
