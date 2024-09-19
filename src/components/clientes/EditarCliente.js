@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useState, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom"
 import Swal from "sweetalert2";
 
@@ -8,13 +8,24 @@ function EditarCliente (props) {
     let {_id} = useParams()
     let navigate = useNavigate();
 
-    const[cliente, guardarCliente] = useState({
+    const[cliente, datosCliente] = useState({
         nombre: '',
         apellido: '',
         empresa: '',
         email: '',
         telefono: ''
     })
+
+    const consultarAPI = async () => {
+        const clientesConsulta = await clienteAxios.get(`/clientes/${_id}`)
+        datosCliente(clientesConsulta.data)
+    }
+
+    useEffect( () => {
+        consultarAPI();
+    }, [])
+
+    
 
     const validarCliente = () => {
         const {nombre, apellido, email, empresa, telefono} = cliente;
@@ -23,7 +34,7 @@ function EditarCliente (props) {
     }
 
     const actualizarState = e => {
-        guardarCliente({
+        datosCliente({
             ...cliente,
             [e.target.name] : e.target.value
         })
@@ -32,7 +43,7 @@ function EditarCliente (props) {
 
     return(
         <Fragment>
-            <h2>Nuevo Cliente</h2>
+            <h2>Editar Cliente</h2>
             <form>
                 <legend>Llena todos los campos</legend>
 
@@ -42,6 +53,7 @@ function EditarCliente (props) {
                             placeholder="Nombre Cliente"
                             name="nombre"
                             onChange={actualizarState}
+                            value={cliente.nombre}
                     />
                 </div>
 
@@ -51,6 +63,7 @@ function EditarCliente (props) {
                             placeholder="Apellido Cliente"
                             name="apellido"
                             onChange={actualizarState}
+                            value={cliente.apellido}
                     />
                 </div>
             
@@ -60,6 +73,7 @@ function EditarCliente (props) {
                             placeholder="Empresa Cliente"
                             name="empresa"
                             onChange={actualizarState}
+                            value={cliente.empresa}
                     />
                 </div>
 
@@ -69,6 +83,7 @@ function EditarCliente (props) {
                             placeholder="Email Cliente"
                             name="email"
                             onChange={actualizarState}
+                            value={cliente.email}
                     />
                 </div>
 
@@ -78,13 +93,14 @@ function EditarCliente (props) {
                             placeholder="Teléfono Cliente"
                             name="telefono"
                             onChange={actualizarState}
+                            value={cliente.telefono}
                     />
                 </div>
 
                 <div className="enviar">
                     <input  type="submit"
                             className="btn btn-azul"
-                            value="Agregar Cliente"
+                            value="Guardar Cambios"
                             disabled={validarCliente()}
                     />
                 </div>
