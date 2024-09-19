@@ -1,9 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+
+import clienteAxios from "../../config/axios";
 
 function Cliente({cliente}) {
 
     const {_id, nombre, apellido, empresa, email, telefono} = cliente
+    const eliminarCliente = idCliente => {
+        Swal.fire({
+            title: "¿Estas seguro de eliminar este cliente?",
+            text: "¡No podrás revertir esta acción!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, Eliminar",
+            cancelButtonText: "Cancelar"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                clienteAxios.delete(`/clientes/${idCliente}`)
+                .then(res => {
+                    Swal.fire({
+                        title: "Cliente eliminado",
+                        text: res.data.mensaje,
+                        icon: "success"
+                    });
+                })
+            }
+          });
+    }
 
     return (
         <li className="cliente">
@@ -18,7 +44,11 @@ function Cliente({cliente}) {
                     <i className="fas fa-pen-alt"></i>
                     Editar Cliente
                 </Link>
-                <button type="button" className="btn btn-rojo btn-eliminar">
+                <button
+                    type="button"
+                    className="btn btn-rojo btn-eliminar"
+                    onClick={() => eliminarCliente(_id)}
+                >
                     <i className="fas fa-times"></i>
                     Eliminar Cliente
                 </button>
