@@ -25,7 +25,28 @@ function EditarCliente (props) {
         consultarAPI();
     }, [])
 
-    
+    const actualizarCliente = e => {
+        e.preventDefault();
+
+        clienteAxios.put(`/clientes/${cliente._id}`,cliente)
+        .then(res => {
+            if(res.data.code === 11000){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Correo registrado'
+                })
+            }
+            else{
+                Swal.fire(
+                    'Cliente editado correctamente',
+                    res.data.mensaje,
+                    'success'
+                )
+                navigate('/');
+            }
+        })
+    }
 
     const validarCliente = () => {
         const {nombre, apellido, email, empresa, telefono} = cliente;
@@ -44,7 +65,9 @@ function EditarCliente (props) {
     return(
         <Fragment>
             <h2>Editar Cliente</h2>
-            <form>
+            <form
+                onSubmit={actualizarCliente}
+            >
                 <legend>Llena todos los campos</legend>
 
                 <div className="campo">
