@@ -1,9 +1,12 @@
 import React, {Fragment, useState} from "react";
+import {useNavigate} from "react-router-dom"
 import Swal from "sweetalert2";
 
 import clienteAxios from "../../config/axios";
 
 function NuevoCliente () {
+    let navigate = useNavigate();
+
     const[cliente, guardarCliente] = useState({
         nombre: '',
         apellido: '',
@@ -42,6 +45,7 @@ function NuevoCliente () {
                         res.data.mensaje,
                         'success'
                     )
+                    navigate('/');
                 }
             })
 
@@ -113,4 +117,4 @@ function NuevoCliente () {
     )
 }
 
-export default NuevoCliente
+export default NuevoCliente;
