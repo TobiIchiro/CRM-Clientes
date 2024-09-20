@@ -43,8 +43,35 @@ const EditarProducto = () => {
 
     const {nombre, precio, imagen} = producto
 
-    const actualizarProducto = e => {
+    const actualizarProducto = async e => {
+        e.preventDefault()
 
+        const formDataa = new FormData();
+        formDataa.append('nombre',producto.nombre)
+        formDataa.append('precio',producto.precio)
+        formDataa.append('imagen',archivo)
+
+        try {
+            const res = await clienteAxios.put(`/productos/${_id}`,formDataa, {
+                headers: {
+                    'Content-Type' : 'multipart/form-data'
+                }
+            })
+            if(res.status === 200){
+                Swal.fire(
+                    'PRODUCTO EDITADO',
+                    res.data.mensaje,
+                    'success'
+                )
+                navigate('/productos');
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Vuelva a intentarlo'
+            })
+        }
     }
 
     return (
@@ -96,7 +123,7 @@ const EditarProducto = () => {
                         <input
                             type="submit"
                             className="btn btn-azul"
-                            value="Agregar Producto"
+                            value="Editar Producto"
                         />
                 </div>
             </form>
