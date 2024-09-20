@@ -45,7 +45,7 @@ function NuevoCliente () {
                         res.data.mensaje,
                         'success'
                     )
-                    navigate('/');
+                    navigate('/clientes');
                 }
             })
 

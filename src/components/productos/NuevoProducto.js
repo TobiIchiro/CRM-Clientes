@@ -35,7 +35,7 @@ const NuevoProducto = () => {
                     res.data.mensaje,
                     'success'
                 )
-                navigate('/');
+                navigate('/productos');
             }
         } catch (error) {
             Swal.fire({
