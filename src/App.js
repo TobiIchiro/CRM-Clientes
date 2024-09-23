@@ -13,6 +13,7 @@ import NuevoCliente from "./components/clientes/NuevoCliente";
 import EditarCliente from "./components/clientes/EditarCliente";
 
 import Pedidos from "./components/pedidos/Pedidos";
+import NuevoPedido from "./components/pedidos/NuevoPedido";
 
 import Productos from "./components/productos/Productos";
 import NuevoProducto from "./components/productos/NuevoProducto";
@@ -37,6 +38,7 @@ function App() {
               <Route exact path="/productos/edit/:_id" element={<EditarProducto/>}/>
 
               <Route exact path="/pedidos" element={<Pedidos/>}/>
+              <Route exact path="/pedidos/add/:_id" element={<NuevoPedido/>}/>
             </Routes>
           </main>
         </div>

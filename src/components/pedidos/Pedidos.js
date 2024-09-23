@@ -1,7 +1,10 @@
-import React from "react";
+import React, {Fragment} from "react";
 
-const Pedidos = () => (
-    <h2>Pedidos</h2>
-)
+const Pedidos = () => {
+    <Fragment>
+        <h2>Pedidos</h2>
+    </Fragment>
+    
+}
 
 export default Pedidos
