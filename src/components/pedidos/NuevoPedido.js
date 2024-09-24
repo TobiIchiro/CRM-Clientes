@@ -1,6 +1,6 @@
 
 import React, {Fragment, useEffect, useState} from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import clienteAxios from "../../config/axios";
 
 import Swal from "sweetalert2";
@@ -10,6 +10,7 @@ import FormBuscarProducto from "./formBuscarProducto";
 import FormCantidadProducto from "./FormCantidadProductos";
 
 const NuevoPedido = () => {
+    let navigate = useNavigate()
     const {_id} = useParams()
 
     const [cliente, guardarCliente] = useState({})
@@ -45,7 +46,9 @@ const NuevoPedido = () => {
     }
 
     const leerDatosBusqueda = e => {
+        console.log(e.target.value)
         guardarBusqueda(e.target.value)
+        
     }
 
     const agregarProductos = index => {
@@ -102,6 +105,32 @@ const NuevoPedido = () => {
 
     }
 
+    const realizarPedido = async e => {
+        e.preventDefault()
+        const pedido = {
+            "cliente" : _id,
+            "pedido" : productos,
+            "total" : total
+        }
+        
+        const resultado = await clienteAxios.post('/pedidos',pedido)
+        if(resultado.status === 200){
+            Swal.fire(
+                'Pedido agregado',
+                resultado.data.mensaje,
+                'success'
+            )
+            navigate('/pedidos');
+        }
+        else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo agregar el pedido'
+            })
+        }
+    }
+
     return (
         <Fragment>
             <h2>Nuevo Pedido</h2>
@@ -146,6 +175,7 @@ const NuevoPedido = () => {
             {
                 total > 0 ? (
                     <form
+                        onSubmit={realizarPedido}
                     >
                         <input 
                             type="submit"
