@@ -5,7 +5,7 @@ import clienteAxios from "../../config/axios";
 
 import Swal from "sweetalert2";
 
-import ProductoListado from "../productos/producto";
+import ProductoListado from "./ProductoListado";
 import FormBuscarProducto from "./formBuscarProducto";
 import FormCantidadProducto from "./FormCantidadProductos";
 
@@ -26,21 +26,14 @@ const NuevoPedido = () => {
     useEffect(() => {
         consultarAPI();
         calcularTotal()
-    }, [productos])
+    }, [productos, productos2])
 
     const buscarProducto = async e => {
         e.preventDefault();
 
         const resultadoBusqueda = await clienteAxios.post(`/productos/busqueda/${busqueda}`)
         if(resultadoBusqueda.data[0]){
-            let productoResultado = resultadoBusqueda.data[0];
-            
-
-            productoResultado.producto = resultadoBusqueda.data[0]._id
-            productoResultado.cantidad = 0
-
-            guardarProducto([...productos, productoResultado])
-            
+          guardarProducto2(resultadoBusqueda.data)
         }
         else{
             Swal.fire({
@@ -55,17 +48,27 @@ const NuevoPedido = () => {
         guardarBusqueda(e.target.value)
     }
 
-    const restarProductos = index => {
+    const agregarProductos = index => {
+        let productoAgregar = productos2[index]
+        productoAgregar.producto = productos2[index]._id
+        productoAgregar.cantidad = 1
+        guardarProducto([...productos, productoAgregar])
+        guardarProducto2([])
+
+
+    }
+
+    const restarCantidad = index => {
         const todosProductos = [...productos]
 
-        if(todosProductos[index].cantidad === 0) return;
+        if(todosProductos[index].cantidad === 1) return;
 
         todosProductos[index].cantidad--;
         guardarProducto(todosProductos)
         
     }
 
-    const agregarProductos = index => {
+    const agregarCantidad = index => {
         const todosProductos = [...productos]
 
         if(todosProductos[index].cantidad >= 30) return;
@@ -76,7 +79,7 @@ const NuevoPedido = () => {
 
     const actualizarInput = (index,e) => {
         const todosProductos = [...productos]
-        if(parseInt(e.target.value) <= 0) e.target.value = 0;
+        if(parseInt(e.target.value) <= 1) e.target.value = 1;
         if(parseInt(e.target.value) >= 30) e.target.value = 30;
         todosProductos[index].cantidad = e.target.value
         guardarProducto(todosProductos)
@@ -90,6 +93,12 @@ const NuevoPedido = () => {
         let nuevoTotal = 0
         productos.map(producto => nuevoTotal += producto.cantidad * producto.precio)
         guardarTotal(nuevoTotal)
+
+    }
+
+    const eliminarProducto = id => {
+        const todosProductos = productos.filter(producto => producto.producto !== id);
+        guardarProducto(todosProductos)
 
     }
 
@@ -107,17 +116,28 @@ const NuevoPedido = () => {
                 buscarProducto= {buscarProducto}
                 leerDatosBusqueda= {leerDatosBusqueda}
             />
-            {productos2[0] ? <ProductoListado/> : null}
+            {productos2[0] ?
+                productos2.map((producto2,index) => (
+                    <ProductoListado
+                    key={producto2._id}
+                        producto2={producto2}
+                        index={index}
+                        agregarProductos={agregarProductos}
+                    />
+                ))
+             : null}
             
             <ul className="resumen">
                 {productos.map((producto, index) => (
                     <FormCantidadProducto
                         key={producto.producto}
                         producto={producto}
-                        restarProductos={restarProductos}
-                        agregarProductos={agregarProductos}
+                        restarCantidad={restarCantidad}
+                        agregarCantidad={agregarCantidad}
                         actualizarInput={actualizarInput}
+                        eliminarProducto={eliminarProducto}
                         index={index}
+
                     />
                 ))}
                     

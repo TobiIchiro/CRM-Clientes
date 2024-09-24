@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 
 const FormCantidadProducto = (props) => {
-    const {producto,restarProductos, agregarProductos, actualizarInput, index} = props
+    const {producto,restarCantidad, agregarCantidad, actualizarInput, index, eliminarProducto} = props
 
     const {nombre, precio, cantidad} = producto
 
@@ -16,7 +16,7 @@ const FormCantidadProducto = (props) => {
                     <div className="contenedor-cantidad">
                         <i
                             className="fas fa-minus"
-                            onClick={() => restarProductos(index)}
+                            onClick={() => restarCantidad(index)}
                         ></i>
                         <input
                             className="fas"
@@ -29,10 +29,14 @@ const FormCantidadProducto = (props) => {
                         {/*<p>{cantidad}</p> */}
                         <i
                             className="fas fa-plus"
-                            onClick={() => agregarProductos(index)}
+                            onClick={() => agregarCantidad(index)}
                         ></i>
                     </div>
-                    <button type="button" className="btn btn-rojo">
+                    <button
+                        type="button"
+                        className="btn btn-rojo"
+                        onClick={() => eliminarProducto(producto.producto)}
+                    >
                         <i className="fas fa-minus-circle"></i>
                             Eliminar Producto
                     </button>
